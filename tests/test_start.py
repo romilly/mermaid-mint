@@ -14,10 +14,10 @@ def test_start_creation():
 
 
 def test_start_set_successor():
-    """Test setting successor for Start step."""
+    """Test setting successor for Start step using property."""
     start = Start("s1", "Begin Process")
     task = Task("t1", "First Task")
     
-    start.set_successor(task)
+    start.successor = task
     
     assert start.successor is task

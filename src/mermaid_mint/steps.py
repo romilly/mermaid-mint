@@ -16,10 +16,6 @@ class Start(Step):
     def __init__(self, step_id: str, name: str):
         super().__init__(step_id, name)
         self.successor = None
-    
-    def set_successor(self, step: Step):
-        """Set the next step in the process."""
-        self.successor = step
 
 
 class Task(Step):
@@ -28,7 +24,3 @@ class Task(Step):
     def __init__(self, step_id: str, name: str):
         super().__init__(step_id, name)
         self.successor = None
-    
-    def set_successor(self, step: Step):
-        """Set the next step in the process."""
-        self.successor = step
