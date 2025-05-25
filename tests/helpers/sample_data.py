@@ -1,3 +1,4 @@
+PROCESS = """
 process:
   process_id: "user_registration"
   name: "User Registration Process"
@@ -42,3 +43,4 @@ steps:
   - step_id: "end_success"
     type: "End"
     name: "Registration Complete"
+"""
