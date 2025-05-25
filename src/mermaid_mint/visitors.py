@@ -10,20 +10,20 @@ class MermaidVisitor:
         """Generate Mermaid diagram from a Process."""
         lines = ["flowchart TD"]
         
-        # Collect all steps by traversing from start
-        visited = set()
-        self._collect_steps(process.start, lines, visited)
+        # Add all step definitions
+        for step_id in process.step_ids():
+            step = process[step_id]
+            lines.append(self._format_step(step))
+        
+        # Add all connections
+        for step_id in process.step_ids():
+            step = process[step_id]
+            lines.extend(self._get_connections(step))
         
         return "\n".join(lines)
     
-    def _collect_steps(self, step, lines, visited):
-        """Recursively collect steps and their connections."""
-        if not step or step.step_id in visited:
-            return
-        
-        visited.add(step.step_id)
-        
-        # Add step definition
+    def _format_step(self, step):
+        """Format a step for Mermaid output."""
         step_formatters = {
             Start: self._format_start_step,
             Task: self._format_task_step,
@@ -33,10 +33,8 @@ class MermaidVisitor:
         
         step_type = type(step)
         if step_type in step_formatters:
-            lines.append(step_formatters[step_type](step))
-        
-        # Add connections
-        self._add_connections(step, lines, visited)
+            return step_formatters[step_type](step)
+        return ""
     
     def _format_start_step(self, step):
         """Format a Start step for Mermaid."""
@@ -54,16 +52,17 @@ class MermaidVisitor:
         """Format an End step for Mermaid."""
         return f"    {step.step_id}[{step.name}]"
     
-    def _add_connections(self, step, lines, visited):
-        """Add connections for a step and recursively process connected steps."""
+    def _get_connections(self, step):
+        """Get all connections for a step."""
+        connections = []
+        
         if hasattr(step, 'successor') and step.successor:
-            lines.append(f"    {step.step_id} --> {step.successor.step_id}")
-            self._collect_steps(step.successor, lines, visited)
+            connections.append(f"    {step.step_id} --> {step.successor.step_id}")
         
         if hasattr(step, 'yes') and step.yes:
-            lines.append(f"    {step.step_id} --> {step.yes.step_id}")
-            self._collect_steps(step.yes, lines, visited)
+            connections.append(f"    {step.step_id} --> {step.yes.step_id}")
         
         if hasattr(step, 'no') and step.no:
-            lines.append(f"    {step.step_id} --> {step.no.step_id}")
-            self._collect_steps(step.no, lines, visited)
+            connections.append(f"    {step.step_id} --> {step.no.step_id}")
+        
+        return connections
