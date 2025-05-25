@@ -42,3 +42,19 @@ class Process:
     process_id: str
     name: str
     start: Step = None
+    
+    def __post_init__(self):
+        """Initialize the steps dictionary after dataclass init."""
+        self._steps = {}
+    
+    def add_step(self, step: Step):
+        """Add a step to the process."""
+        self._steps[step.step_id] = step
+    
+    def step_ids(self):
+        """Return a list of all step IDs in the process."""
+        return list(self._steps.keys())
+    
+    def get_step(self, step_id: str):
+        """Return the step with the given ID, or None if not found."""
+        return self._steps.get(step_id)
