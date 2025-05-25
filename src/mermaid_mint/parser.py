@@ -34,19 +34,34 @@ class Parser:
     def _create_step(self, step_data):
         """Create a step object from step data."""
         step_type = step_data['type']
-        step_id = step_data['step_id']
-        name = step_data['name']
         
-        if step_type == 'Start':
-            return Start(step_id, name)
-        elif step_type == 'Task':
-            return Task(step_id, name)
-        elif step_type == 'Decision':
-            return Decision(step_id, name, step_data.get('test', ''))
-        elif step_type == 'End':
-            return End(step_id, name)
-        else:
+        step_creators = {
+            'Start': self._create_start_step,
+            'Task': self._create_task_step,
+            'Decision': self._create_decision_step,
+            'End': self._create_end_step
+        }
+        
+        if step_type not in step_creators:
             raise ValueError(f"Unknown step type: {step_type}")
+        
+        return step_creators[step_type](step_data)
+    
+    def _create_start_step(self, step_data):
+        """Create a Start step from step data."""
+        return Start(step_data['step_id'], step_data['name'])
+    
+    def _create_task_step(self, step_data):
+        """Create a Task step from step data."""
+        return Task(step_data['step_id'], step_data['name'])
+    
+    def _create_decision_step(self, step_data):
+        """Create a Decision step from step data."""
+        return Decision(step_data['step_id'], step_data['name'], step_data.get('test', ''))
+    
+    def _create_end_step(self, step_data):
+        """Create an End step from step data."""
+        return End(step_data['step_id'], step_data['name'])
     
     def _connect_steps(self, steps_data, steps):
         """Connect steps based on successor/yes/no references."""
