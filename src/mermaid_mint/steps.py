@@ -18,6 +18,11 @@ class Start(Step):
         self.successor = None
 
 
+class End(Step):
+    """End point of a process."""
+    pass
+
+
 class Task(Step):
     """A task/activity in the process."""
     

@@ -48,6 +48,11 @@ pytest
 # 4. Commit after each passing test
 git add . && git commit -m "Add feature X with passing test"
 
+### Commit Message Guidelines
+- Keep commit messages concise and descriptive
+- Do NOT add Claude authorship claims or generated-by tags
+- Focus on what was implemented and why
+
 # Other useful test commands
 pytest -v
 pytest -k "test_name_pattern" -v
