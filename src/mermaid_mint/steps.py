@@ -26,3 +26,11 @@ class End(Step):
 class Task(Step):
     """A task/activity in the process."""
     successor: Step = None
+
+
+@dataclass
+class Decision(Step):
+    """A decision point with yes/no branches."""
+    test: str = ""
+    yes: Step = None
+    no: Step = None
