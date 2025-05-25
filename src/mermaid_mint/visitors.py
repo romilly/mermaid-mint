@@ -24,16 +24,38 @@ class MermaidVisitor:
         visited.add(step.step_id)
         
         # Add step definition
-        if isinstance(step, Start):
-            lines.append(f"    {step.step_id}[{step.name}]")
-        elif isinstance(step, Task):
-            lines.append(f"    {step.step_id}[{step.name}]")
-        elif isinstance(step, Decision):
-            lines.append(f"    {step.step_id}{{{step.name}}}")
-        elif isinstance(step, End):
-            lines.append(f"    {step.step_id}[{step.name}]")
+        step_formatters = {
+            Start: self._format_start_step,
+            Task: self._format_task_step,
+            Decision: self._format_decision_step,
+            End: self._format_end_step
+        }
+        
+        step_type = type(step)
+        if step_type in step_formatters:
+            lines.append(step_formatters[step_type](step))
         
         # Add connections
+        self._add_connections(step, lines, visited)
+    
+    def _format_start_step(self, step):
+        """Format a Start step for Mermaid."""
+        return f"    {step.step_id}[{step.name}]"
+    
+    def _format_task_step(self, step):
+        """Format a Task step for Mermaid."""
+        return f"    {step.step_id}[{step.name}]"
+    
+    def _format_decision_step(self, step):
+        """Format a Decision step for Mermaid."""
+        return f"    {step.step_id}{{{step.name}}}"
+    
+    def _format_end_step(self, step):
+        """Format an End step for Mermaid."""
+        return f"    {step.step_id}[{step.name}]"
+    
+    def _add_connections(self, step, lines, visited):
+        """Add connections for a step and recursively process connected steps."""
         if hasattr(step, 'successor') and step.successor:
             lines.append(f"    {step.step_id} --> {step.successor.step_id}")
             self._collect_steps(step.successor, lines, visited)
