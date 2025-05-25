@@ -39,14 +39,21 @@ def test_process_step_ids():
 
 
 def test_process_get_step():
-    """Test that Process can return a step by ID."""
+    """Test that Process can return a step by ID using indexing."""
     process = Process("p1", "Test Process")
     start = Start("s1", "Begin")
     task = Task("t1", "Task")
     
-    process.add_step(start)
-    process.add_step(task)
+    process["s1"] = start
+    process["t1"] = task
     
-    assert process.get_step("s1") is start
-    assert process.get_step("t1") is task
-    assert process.get_step("nonexistent") is None
+    assert process["s1"] is start
+    assert process["t1"] is task
+
+
+def test_process_get_step_keyerror():
+    """Test that Process raises KeyError for nonexistent step ID."""
+    process = Process("p1", "Test Process")
+    
+    with pytest.raises(KeyError):
+        _ = process["nonexistent"]

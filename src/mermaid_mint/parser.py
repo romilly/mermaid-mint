@@ -15,20 +15,23 @@ class Parser:
     def parse_string(self, raw_data):
         data = yaml.safe_load(raw_data)
         process_data = data['process']
-        # Create all steps
-        steps = {}
-        for step_data in data['steps']:
-            step = self._create_step(step_data)
-            steps[step.step_id] = step
-        # Connect steps
-        self._connect_steps(data['steps'], steps)
-        # Find the start step
-        start_step = next(step for step in steps.values() if isinstance(step, Start))
+        # Create process
         process = Process(
             process_id=process_data['process_id'],
-            name=process_data['name'],
-            start=start_step
+            name=process_data['name']
         )
+        
+        # Create all steps and add to process
+        for step_data in data['steps']:
+            step = self._create_step(step_data)
+            process[step.step_id] = step
+        
+        # Connect steps
+        self._connect_steps(data['steps'], process)
+        
+        # Find and set the start step
+        start_step = next(step for step in process.step_ids() if isinstance(process[step], Start))
+        process.start = process[start_step]
         return process
 
     def _create_step(self, step_data):
@@ -63,16 +66,16 @@ class Parser:
         """Create an End step from step data."""
         return End(step_data['step_id'], step_data['name'])
     
-    def _connect_steps(self, steps_data, steps):
+    def _connect_steps(self, steps_data, process):
         """Connect steps based on successor/yes/no references."""
         for step_data in steps_data:
-            step = steps[step_data['step_id']]
+            step = process[step_data['step_id']]
             
             if hasattr(step, 'successor') and 'successor' in step_data:
-                step.successor = steps[step_data['successor']]
+                step.successor = process[step_data['successor']]
             
             if hasattr(step, 'yes') and 'yes' in step_data:
-                step.yes = steps[step_data['yes']]
+                step.yes = process[step_data['yes']]
             
             if hasattr(step, 'no') and 'no' in step_data:
-                step.no = steps[step_data['no']]
+                step.no = process[step_data['no']]

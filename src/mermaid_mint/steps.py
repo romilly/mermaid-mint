@@ -58,3 +58,11 @@ class Process:
     def get_step(self, step_id: str):
         """Return the step with the given ID, or None if not found."""
         return self._steps.get(step_id)
+    
+    def __getitem__(self, step_id: str):
+        """Get a step by ID using indexing syntax."""
+        return self._steps[step_id]
+    
+    def __setitem__(self, step_id: str, step: Step):
+        """Set a step by ID using indexing syntax."""
+        self._steps[step_id] = step
