@@ -1,12 +1,13 @@
 """Process step classes for the mermaid-mint DSL."""
 
+from dataclasses import dataclass
 
+
+@dataclass
 class Step:
     """Base class for all process steps."""
-    
-    def __init__(self, id: str, name: str):
-        self.id = id
-        self.name = name
+    id: str
+    name: str
 
 
 class Start(Step):
