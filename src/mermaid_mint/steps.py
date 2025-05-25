@@ -34,3 +34,11 @@ class Decision(Step):
     test: str = ""
     yes: Step = None
     no: Step = None
+
+
+@dataclass
+class Process:
+    """Complete process workflow."""
+    process_id: str
+    name: str
+    start: Step = None
