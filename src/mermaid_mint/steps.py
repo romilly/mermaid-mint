@@ -6,15 +6,15 @@ from dataclasses import dataclass
 @dataclass
 class Step:
     """Base class for all process steps."""
-    id: str
+    step_id: str
     name: str
 
 
 class Start(Step):
     """Starting point of a process."""
     
-    def __init__(self, id: str, name: str):
-        super().__init__(id, name)
+    def __init__(self, step_id: str, name: str):
+        super().__init__(step_id, name)
         self.successor = None
     
     def set_successor(self, step: Step):
@@ -25,8 +25,8 @@ class Start(Step):
 class Task(Step):
     """A task/activity in the process."""
     
-    def __init__(self, id: str, name: str):
-        super().__init__(id, name)
+    def __init__(self, step_id: str, name: str):
+        super().__init__(step_id, name)
         self.successor = None
     
     def set_successor(self, step: Step):

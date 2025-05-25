@@ -5,10 +5,10 @@ from mermaid_mint.steps import Start, Task
 
 
 def test_start_creation():
-    """Test creating a Start step with id and name."""
+    """Test creating a Start step with step_id and name."""
     start = Start("s1", "Begin Process")
     
-    assert start.id == "s1"
+    assert start.step_id == "s1"
     assert start.name == "Begin Process"
     assert start.successor is None
 
