@@ -13,10 +13,15 @@ class Parser:
             data = yaml.safe_load(file)
         
         process_data = data['process']
+        
+        # Find the start step
+        start_step_data = next(step for step in data['steps'] if step['type'] == 'Start')
+        start_step = Start(start_step_data['step_id'], start_step_data['name'])
+        
         process = Process(
             process_id=process_data['process_id'],
             name=process_data['name'],
-            start=Start("dummy", "dummy")
+            start=start_step
         )
         
         return process
