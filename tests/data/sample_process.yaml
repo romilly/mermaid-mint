@@ -1,0 +1,44 @@
+process:
+  process_id: "user_registration"
+  name: "User Registration Process"
+  
+steps:
+  - step_id: "start"
+    type: "Start"
+    name: "Begin Registration"
+    successor: "validate_email"
+    
+  - step_id: "validate_email"
+    type: "Task"
+    name: "Validate Email Address"
+    successor: "check_existing_user"
+    
+  - step_id: "check_existing_user"
+    type: "Decision"
+    name: "Check if User Exists"
+    test: "user_exists == true"
+    yes: "reject_duplicate"
+    no: "create_account"
+    
+  - step_id: "reject_duplicate"
+    type: "Task"
+    name: "Reject Duplicate User"
+    successor: "end_rejected"
+    
+  - step_id: "create_account"
+    type: "Task"
+    name: "Create User Account"
+    successor: "send_confirmation"
+    
+  - step_id: "send_confirmation"
+    type: "Task"
+    name: "Send Confirmation Email"
+    successor: "end_success"
+    
+  - step_id: "end_rejected"
+    type: "End"
+    name: "Registration Rejected"
+    
+  - step_id: "end_success"
+    type: "End"
+    name: "Registration Complete"
