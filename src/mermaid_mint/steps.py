@@ -10,22 +10,19 @@ class Step:
     name: str
 
 
+@dataclass
 class Start(Step):
     """Starting point of a process."""
-    
-    def __init__(self, step_id: str, name: str):
-        super().__init__(step_id, name)
-        self.successor = None
+    successor: Step = None
 
 
+@dataclass
 class End(Step):
     """End point of a process."""
     pass
 
 
+@dataclass
 class Task(Step):
     """A task/activity in the process."""
-    
-    def __init__(self, step_id: str, name: str):
-        super().__init__(step_id, name)
-        self.successor = None
+    successor: Step = None
