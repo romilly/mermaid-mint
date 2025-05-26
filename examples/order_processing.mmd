@@ -1,0 +1,25 @@
+flowchart TD
+    start[Begin Order Processing]
+    save_order[Save Order Details]
+    check_inventory{Check Product Availability}
+    process_payment[Process Payment]
+    backorder[Create Backorder]
+    orders_db[(Orders Database)]
+    inventory_db[(Inventory Database)]
+    payment_db[(Payment Database)]
+    audit_log[/Audit Log/]
+    notification_doc[/Customer Notification/]
+    end_success[Order Processed Successfully]
+    end_backorder[Order Backordered]
+    start --> save_order
+    save_order --> check_inventory
+    save_order --> orders_db
+    save_order --> audit_log
+    check_inventory --> process_payment
+    check_inventory --> backorder
+    check_inventory --> inventory_db
+    process_payment --> end_success
+    process_payment --> payment_db
+    backorder --> end_backorder
+    backorder --> orders_db
+    backorder --> notification_doc
