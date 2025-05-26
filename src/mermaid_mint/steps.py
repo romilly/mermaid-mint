@@ -1,6 +1,8 @@
 """Process step classes for the mermaid-mint DSL."""
 
-from dataclasses import dataclass
+from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
+from typing import Union, List
 
 
 @dataclass
@@ -35,15 +37,52 @@ class End(TerminalStep):
 
 
 @dataclass
+class Resource(TerminalStep):
+    """Base class for resources that can be updated or queried."""
+    pass
+
+
+@dataclass
+class Database(Resource):
+    """A database that can be updated or queried."""
+    pass
+
+
+@dataclass
+class Document(Resource):
+    """A document that can be updated or queried."""
+    pass
+
+
+@dataclass
+class Operation(ABC):
+    """Abstract base class for operations on resources."""
+    target: Resource
+    description: str
+
+
+@dataclass
+class Query(Operation):
+    """Query operation on a resource."""
+    pass
+
+
+@dataclass
+class Update(Operation):
+    """Update operation on a resource."""
+    pass
+
+
+@dataclass
 class Task(NonTerminalStep):
     """A task/activity in the process."""
-    pass
+    operations: List[Operation] = field(default_factory=list)
 
 
 @dataclass
 class Decision(Step):
     """A decision point with yes/no branches."""
-    test: str = ""
+    test: Union[str, Query] = ""
     yes: Step = None
     no: Step = None
 
