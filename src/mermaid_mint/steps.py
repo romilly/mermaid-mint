@@ -11,21 +11,33 @@ class Step:
 
 
 @dataclass
-class Start(Step):
-    """Starting point of a process."""
+class TerminalStep(Step):
+    """Base class for steps with no successor."""
+    pass
+
+
+@dataclass
+class NonTerminalStep(Step):
+    """Base class for steps with successor(s)."""
     successor: Step = None
 
 
 @dataclass
-class End(Step):
+class Start(NonTerminalStep):
+    """Starting point of a process."""
+    pass
+
+
+@dataclass
+class End(TerminalStep):
     """End point of a process."""
     pass
 
 
 @dataclass
-class Task(Step):
+class Task(NonTerminalStep):
     """A task/activity in the process."""
-    successor: Step = None
+    pass
 
 
 @dataclass
