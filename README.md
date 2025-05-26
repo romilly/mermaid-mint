@@ -2,6 +2,10 @@
 
 A Python DSL for creating rich process diagrams with database and document operations that can be converted to Mermaid flowcharts.
 
+The project is usable but under active development.
+
+The code and documentation were developed by Claude code pairing with me (Romilly Cocking).
+
 ## Overview
 
 Mermaid-mint allows you to define business processes using a comprehensive YAML syntax and convert them to Mermaid diagram format. The DSL supports complex workflows with data operations, resource management, and dynamic decision-making. The project follows strict TDD principles and uses clean architectural patterns.
