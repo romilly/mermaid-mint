@@ -18,11 +18,13 @@ Mermaid-mint allows you to define business processes using a comprehensive YAML 
 - **Dynamic Decisions**: Decision steps with Query-based tests
 - **YAML Input**: Human-readable YAML format for process definitions
 - **Mermaid Output**: Generate rich Mermaid flowchart syntax with proper resource visualization
+- **Enhanced Rendering**: Uses ELK layout engine for superior diagram layout and positioning
 - **Extensible Architecture**: Dictionary dispatch patterns and visitor pattern for easy extension
 
 ## Object Model
 
 ```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}}}%%
 classDiagram
     class Step {
         +step_id: str
@@ -190,9 +192,10 @@ cd examples
 python convert_to_mermaid.py order_processing.yaml
 ```
 
-This generates a `.mmd` file with rich Mermaid syntax:
+This generates a `.mmd` file with rich Mermaid syntax using the ELK layout engine:
 
 ```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}}}%%
 flowchart TD
     start[Begin Order Processing]
     save_order[Save Order Details]
@@ -289,7 +292,24 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -e .
 ```
 
+## Rendering
+
+The generated Mermaid diagrams use the **ELK (Eclipse Layout Kernel)** renderer for superior layout quality:
+
+- **Better positioning**: ELK provides more sophisticated graph layout algorithms
+- **Reduced overlaps**: Superior handling of complex diagrams with multiple connections
+- **Automatic optimization**: ELK minimizes edge crossings and optimizes node placement
+- **PyCharm compatible**: The ELK directive works seamlessly in PyCharm's built-in Mermaid renderer
+
+For best results, ensure your Mermaid viewer supports ELK rendering (Mermaid 9.4+).
+
 ## Changelog
+
+### v0.3.0 - Enhanced Layout with ELK Renderer
+✅ **Complete**: Integrated ELK layout engine for superior diagram rendering  
+✅ **Complete**: Automatic ELK directive generation in all Mermaid output  
+✅ **Complete**: Improved layout quality for complex resource relationships  
+✅ **Complete**: PyCharm compatibility with enhanced rendering  
 
 ### v0.2.0 - Resource and Operations Model
 ✅ **Complete**: Comprehensive DSL with inheritance hierarchy (TerminalStep, NonTerminalStep)  

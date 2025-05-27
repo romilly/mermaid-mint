@@ -8,7 +8,10 @@ class MermaidVisitor:
     
     def visit_process(self, process: Process) -> str:
         """Generate Mermaid diagram from a Process."""
-        lines = ["flowchart TD"]
+        lines = [
+            '%%{init: {"flowchart": {"defaultRenderer": "elk"}}}%%',
+            "flowchart TD"
+        ]
         
         # Add all step definitions
         for step_id in process.step_ids():
